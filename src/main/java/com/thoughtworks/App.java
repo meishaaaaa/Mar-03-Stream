@@ -63,13 +63,13 @@ public class App {
     public static List<Trader> getCambridgeTraders(List<Transaction> transactions) {
         Stream<Transaction> stream = transactions.stream();
         Stream<Transaction> stream1 = stream.filter((city) -> city.getTrader().getCity().equals("Cambridge"));
-        Stream<Trader> stream2 = stream1.map(Transaction::getTrader);
+        Stream<Trader> stream2 = stream1.map(Transaction::getTrader).distinct();
         return stream2.sorted(Comparator.comparing(Trader::getName)).collect(Collectors.toList());
     }
 
     public static List<String> getTradersName(List<Transaction> transactions) {
         Stream<Transaction> stream = transactions.stream();
-        Stream<Trader> stream1 = stream.map(Transaction::getTrader);
+        Stream<Trader> stream1 = stream.map(Transaction::getTrader).distinct();
         return stream1.map(Trader::getName).sorted().collect(Collectors.toList());
     }
 
@@ -83,9 +83,10 @@ public class App {
 
     public static List<Integer> getCambridgeTransactionsValue(List<Transaction> transactions) {
         Stream<Transaction> stream = transactions.stream();
-        Stream<Integer> stream1 = stream.map(Transaction::getValue);
+        Stream<Transaction> stream1 = stream.filter((city) -> city.getTrader().getCity().equals("Cambridge"));
+        Stream<Integer> stream2 = stream1.map(Transaction::getValue);
 
-        return stream1.collect(Collectors.toList());
+        return stream2.collect(Collectors.toList());
 
     }
 
