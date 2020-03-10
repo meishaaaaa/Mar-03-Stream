@@ -47,30 +47,30 @@ public class App {
     }
 
     public static List<Transaction> get2011Transactions(List<Transaction> transactions) {
-        Stream<Transaction> stream = transactions.stream();
-        Stream<Transaction> stream1 = stream.filter((year) -> year.getYear() == 2011);
-        Stream<Transaction> stream2 = stream1.sorted(Comparator.comparing(Transaction::getValue));
+        Stream<Transaction> stream = transactions.stream().filter((year) -> year.getYear() == 2011)
+                .sorted(Comparator.comparing(Transaction::getValue));
 
-        return stream2.collect(Collectors.toList());
+        return stream.collect(Collectors.toList());
     }
 
     public static List<String> getTradersCity(List<Transaction> transactions) {
-        Stream<String> stream = transactions.stream().map(Transaction::getTrader).map(Trader::getCity);
-        Stream<String> stream1 = stream.distinct();
-        return stream1.collect(Collectors.toList());
+        Stream<String> stream = transactions.stream().map(Transaction::getTrader).map(Trader::getCity).distinct();
+
+        return stream.collect(Collectors.toList());
     }
 
     public static List<Trader> getCambridgeTraders(List<Transaction> transactions) {
         Stream<Transaction> stream = transactions.stream();
-        Stream<Transaction> stream1 = stream.filter((city) -> city.getTrader().getCity().equals("Cambridge"));
-        Stream<Trader> stream2 = stream1.map(Transaction::getTrader).distinct();
+        Stream<Trader> stream1=stream.map(Transaction::getTrader).distinct();
+        Stream<Trader>stream2=stream1.filter((city)->city.getCity().equals("Cambridge"));
+//        Stream<Transaction> stream1 = stream.filter((city) -> city.getTrader().getCity().equals("Cambridge"));
+//        Stream<Trader> stream2 = stream1.map(Transaction::getTrader).distinct();
         return stream2.sorted(Comparator.comparing(Trader::getName)).collect(Collectors.toList());
     }
 
     public static List<String> getTradersName(List<Transaction> transactions) {
-        Stream<Transaction> stream = transactions.stream();
-        Stream<Trader> stream1 = stream.map(Transaction::getTrader).distinct();
-        return stream1.map(Trader::getName).sorted().collect(Collectors.toList());
+        Stream<Trader> stream = transactions.stream().map(Transaction::getTrader).distinct();
+        return stream.map(Trader::getName).sorted().collect(Collectors.toList());
     }
 
     //5.有没有交易员是在米兰工作的
@@ -82,11 +82,10 @@ public class App {
     // 6.返回交易员是剑桥的所有交易的交易额
 
     public static List<Integer> getCambridgeTransactionsValue(List<Transaction> transactions) {
-        Stream<Transaction> stream = transactions.stream();
-        Stream<Transaction> stream1 = stream.filter((city) -> city.getTrader().getCity().equals("Cambridge"));
-        Stream<Integer> stream2 = stream1.map(Transaction::getValue);
+        Stream<Transaction> stream = transactions.stream().filter((city) -> city.getTrader().getCity().equals("Cambridge"));
+        Stream<Integer> stream1 = stream.map(Transaction::getValue);
 
-        return stream2.collect(Collectors.toList());
+        return stream1.collect(Collectors.toList());
 
     }
 
